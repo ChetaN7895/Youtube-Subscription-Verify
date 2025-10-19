@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechOpTrack - Verify Subscription for PPT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: #ff0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .channel-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+        }
+        
+        .channel-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .channel-link:hover {
+            color: #ffcc00;
+            transform: translateY(-2px);
+        }
+        
+        .verification-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .step-number {
+            background: #ffcc00;
+            color: #333;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .action-btn {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .action-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .action-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .status-message {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .success {
+            background: rgba(40, 167, 69, 0.3);
+            color: #a8e6cf;
+        }
+        
+        .error {
+            background: rgba(220, 53, 69, 0.3);
+            color: #f8d7da;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .download-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            gap: 20px;
+        }
+        
+        .feature {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+        
+        .feature h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .thank-you {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            color: #a8e6cf;
+            font-weight: bold;
+        }
+        
+        .icon {
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .action-btn, .download-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">YT</div>
+            <h1>TechOpTrack</h1>
+        </div>
+        
+        <p>To access our premium PowerPoint presentation, you need to verify your subscription to our YouTube channel.</p>
+        
+        <div class="channel-info">
+            <a href="https://www.youtube.com/@TechOpTrack" target="_blank" class="channel-link">
+                <span class="icon">▶️</span> Visit Our YouTube Channel
+            </a>
+        </div>
+        
+        <div class="verification-section">
+            <h2>Verification Process</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Subscribe to Our Channel</h3>
+                    <p>Visit our YouTube channel and click the Subscribe button if you haven't already.</p>
+                    <a href="https://www.youtube.com/@TechOpTrack" target="_blank" class="action-btn">
+                        <span class="icon">📺</span> Go to Channel
+                    </a>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Verify Your Subscription</h3>
+                    <p>Click the button below to check if you're subscribed to our channel.</p>
+                    <button class="action-btn" id="verifyBtn">
+                        <span class="icon">✅</span> Verify Subscription
+                    </button>
+                    <div id="verificationStatus"></div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Download Your PPT</h3>
+                    <p>Once verified, you'll be able to download the presentation.</p>
+                    <button class="action-btn" id="downloadBtn" disabled>
+                        <span class="icon">📥</span> Download PPT
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="download-section" id="downloadSection">
+            <h2>Thank You for Subscribing!</h2>
+            <p>Your subscription has been verified. You can now download the presentation.</p>
+            <a href="#" class="download-btn" id="downloadLink">
+                <span class="icon">📥</span> Download PPT File
+            </a>
+            <p class="thank-you">Enjoy your content!</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>What's Inside?</h3>
+                <p>Comprehensive slides with latest technology operations and tracking strategies</p>
+            </div>
+            <div class="feature">
+                <h3>Fully Editable</h3>
+                <p>Customize the presentation to fit your needs</p>
+            </div>
+            <div class="feature">
+                <h3>Professional Design</h3>
+                <p>Visually appealing slides with modern design</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const verifyBtn = document.getElementById('verifyBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const downloadSection = document.getElementById('downloadSection');
+            const downloadLink = document.getElementById('downloadLink');
+            const verificationStatus = document.getElementById('verificationStatus');
+            
+            // Replace with your actual PPT file URL
+            const pptUrl = 'https://example.com/path-to-your-presentation.pptx';
+            
+            // In a real implementation, you would use YouTube API
+            // This is a simulation for demonstration purposes
+            verifyBtn.addEventListener('click', function() {
+                // Show loading state
+                verificationStatus.innerHTML = '<div class="status-message"><span class="loading"></span> Checking subscription status...</div>';
+                verifyBtn.disabled = true;
+                
+                // Simulate API call delay
+                setTimeout(function() {
+                    // For demo purposes, we'll randomly determine if user is subscribed
+                    // In reality, you would use YouTube API to check subscription status
+                    const isSubscribed = Math.random() > 0.5; // 50% chance for demo
+                    
+                    if (isSubscribed) {
+                        verificationStatus.innerHTML = '<div class="status-message success">✅ Success! You are subscribed to our channel.</div>';
+                        downloadBtn.disabled = false;
+                        downloadBtn.style.background = 'linear-gradient(to right, #00b09b, #96c93d)';
+                    } else {
+                        verificationStatus.innerHTML = '<div class="status-message error">❌ You are not subscribed to our channel. Please subscribe and try again.</div>';
+                        verifyBtn.disabled = false;
+                    }
+                }, 2000);
+            });
+            
+            downloadBtn.addEventListener('click', function() {
+                // Show the download section with animation
+                downloadSection.style.display = 'block';
+                
+                // Set the download link
+                downloadLink.href = pptUrl;
+                
+                // Scroll to download section
+                downloadSection.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Real implementation would use YouTube API
+            // Here's a conceptual example of how it would work:
+            
+            function checkSubscription() {
+                // You would need to:
+                // 1. Get the user's Google OAuth token
+                // 2. Use YouTube Data API to check if user is subscribed to your channel
+                // 3. Return true/false based on the API response
+                
+                // Example API call (conceptual):
+                
+                fetch(`https://www.googleapis.com/youtube/v3/subscriptions?part=subscriberSnippet&mySubscribers=true&forChannelId=UC6sNtd0TKVv5RlYLLL8jUMg`, {
+                    headers: {
+                        'Authorization': `Bearer ${userAccessToken}`
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Check if user is subscribed
+                    const isSubscribed = data.items && data.items.length > 0;
+                    return isSubscribed;
+                })
+                
+            }
+
+
+            // Conceptual code for YouTube API integration
+// async function verifyYouTubeSubscription(accessToken) {
+//     const response = await fetch(
+//         `https://www.googleapis.com/youtube/v3/subscriptions?part=subscriberSnippet&mySubscribers=true&forChannelId=UC6sNtd0TKVv5RlYLLL8jUMg`, 
+//         {
+//             headers: {
+//                 'Authorization': `Bearer ${accessToken}`
+//             }
+//         }
+//     );
+    
+//     const data = await response.json();
+//     return data.items && data.items.length > 0;
+// }
+            });
+        </script>
+</body>
+</html>

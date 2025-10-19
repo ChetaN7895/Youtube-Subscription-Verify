@@ -557,7 +557,7 @@
 
             // Handle download button click
             downloadBtn.addEventListener('click', function() {
-                if (pptUrl && pptUrl !== 'https://1drv.ms/p/c/bc7b006de6f6b1bb/ER6rLbYHaydPmN3FfRluNKMBq7fRkoZrT3-0fgUrv3eJSg?e=cFJ3LT') {
+               if (pptUrl && pptUrl.startsWith('https')) {
                     downloadSection.style.display = 'block';
                     downloadLink.href = pptUrl;
                     downloadLink.setAttribute('download', 'TechOpTrack-Presentation.pptx');
@@ -579,5 +579,6 @@
 </body>
 
 </html>
+
 
 
